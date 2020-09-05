@@ -32,6 +32,9 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://projectlombok.org/features/all
 * https://www.jenv.be/
 * https://www.baeldung.com/spring-boot-h2-database
+* https://devcenter.heroku.com/changelog-items/1489
+* https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku
+* https://devcenter.heroku.com/articles/authentication
 
 #### Spring
 
