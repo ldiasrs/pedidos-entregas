@@ -2,13 +2,17 @@
 
 Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo.
 
-# Rodando o projeto
+## Pipeline 
+
+* https://app.circleci.com/pipelines/github/ldiasrs/pedidos-entregas
+
+## Rodando o projeto
 
 ```
  ./gradlew bootRun
 ```
 
-# Consumir a API
+## Consumir a API
 
 Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 
@@ -16,11 +20,11 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
  http get localhost:8080/test
 ```
 
-# Testes unitários
+## Testes unitários
 ```
  ./gradlew test
 ```
-## Referência técninca
+### Referência técninca
 
 * https://start.spring.io/
 * https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-46b74371d107
@@ -29,7 +33,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://www.jenv.be/
 * https://www.baeldung.com/spring-boot-h2-database
 
-### Spring
+#### Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/gradle-plugin/reference/html/)
@@ -38,7 +42,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
 
-### Guides
+#### Guides
 The following guides illustrate how to use some features concretely:
 
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
@@ -46,7 +50,7 @@ The following guides illustrate how to use some features concretely:
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
 * [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 
-### Additional Links
+#### Additional Links
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
