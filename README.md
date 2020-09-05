@@ -1,15 +1,35 @@
 # API para pedidos de entrega
 
+Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo.
 
+# Rodando o projeto
 
-https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-46b74371d107
-https://www.jenv.be/
-https://projectlombok.org/features/all
-https://www.jenv.be/
+```
+ ./gradlew bootRun
+```
 
-### Referência técninca Spring
+# Consumir a API
 
-https://start.spring.io/
+Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
+
+```
+ http get localhost:8080/test
+```
+
+# Testes unitários
+```
+ ./gradlew test
+```
+## Referência técninca
+
+* https://start.spring.io/
+* https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-46b74371d107
+* https://www.jenv.be/
+* https://projectlombok.org/features/all
+* https://www.jenv.be/
+* https://www.baeldung.com/spring-boot-h2-database
+
+### Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/gradle-plugin/reference/html/)
