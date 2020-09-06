@@ -51,14 +51,14 @@ jobs:
       # run tests!
       - run: gradle test
 
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build # only run deploy-via-git job if the build job has completed
-          filters:
-            branches:
-              only: master # only run deploy-via-git job on master branch
+#workflows:
+#  version: 2
+#  build-deploy:
+#    jobs:
+#      - build
+#      - deploy:
+#          requires:
+#            - build # only run deploy-via-git job if the build job has completed
+#          filters:
+#            branches:
+#              only: master # only run deploy-via-git job on master branch
