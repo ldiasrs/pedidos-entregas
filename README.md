@@ -6,6 +6,10 @@ Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso pa
 
 * https://app.circleci.com/pipelines/github/ldiasrs/pedidos-entregas
 
+## Deploy
+
+* https://dashboard.heroku.com/apps/pedidos-entregas/activity
+
 ## Rodando o projeto
 
 ```
