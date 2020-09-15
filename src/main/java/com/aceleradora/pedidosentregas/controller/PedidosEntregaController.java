@@ -1,6 +1,6 @@
 package com.aceleradora.pedidosentregas.controller;
 
-import com.aceleradora.pedidosentregas.model.*;
+import com.aceleradora.pedidosentregas.model.pedido.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @RestController
 public class PedidosEntregaController {
 
-    @GetMapping(path = "/test")
+    @GetMapping(path = "/sendEmail")
     public ResponseEntity<PedidoEntrega> defaultPedido() {
         var pedido = PedidoEntrega.builder()
                 .observacoes("Pode entregar para o porteiro")

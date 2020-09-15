@@ -1,4 +1,4 @@
-package com.aceleradora.pedidosentregas.model;
+package com.aceleradora.pedidosentregas.model.pedido;
 
 import lombok.Builder;
 import lombok.Value;

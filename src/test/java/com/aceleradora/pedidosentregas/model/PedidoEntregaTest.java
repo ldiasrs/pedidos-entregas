@@ -1,5 +1,6 @@
 package com.aceleradora.pedidosentregas.model;
 
+import com.aceleradora.pedidosentregas.model.pedido.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

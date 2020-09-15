@@ -39,6 +39,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://devcenter.heroku.com/changelog-items/1489
 * https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku
 * https://devcenter.heroku.com/articles/authentication
+* https://devcenter.heroku.com/categories/deployment
 
 #### Spring
 
