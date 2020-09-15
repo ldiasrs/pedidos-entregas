@@ -2,11 +2,13 @@ package com.aceleradora.pedidosentregas.client;
 
 import com.aceleradora.pedidosentregas.model.email.EmailRequest;
 import com.aceleradora.pedidosentregas.model.email.EmailResponse;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.aceleradora.pedidosentregas.client.MailGunEmailSenderClient.MAILGUN_DOMAIN_TAG;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 class MailGunEmailSenderClientTest {
 
     @Test
