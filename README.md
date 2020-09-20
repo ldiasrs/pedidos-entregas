@@ -40,7 +40,8 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku
 * https://devcenter.heroku.com/articles/authentication
 * https://devcenter.heroku.com/categories/deployment
-
+* https://www.baeldung.com/spring-email
+* https://support.google.com/accounts/answer/185833
 #### Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)

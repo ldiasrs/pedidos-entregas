@@ -9,18 +9,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
-@Component
+@Component("mailgun")
 public class MailGunEmailSenderClient implements  EmailSenderClient {
 
     public static final String MAILGUN_DOMAIN_TAG = "<MAILGUN_DOMAIN>";
     private String apiKey;
     private String url;
 
-    public MailGunEmailSenderClient(@Value("#{systemEnvironment[\'MAILGUN_APIKEY\']}") String apiKey,
-                                    @Value("#{systemEnvironment[\'MAILGUN_DOMAIN\']}") String domain,
+    public MailGunEmailSenderClient(@Value("${mailgun.apikey}") String apiKey,
                                     @Value("${mailgun.urlTemplate}") String urlTemplate) {
         this.apiKey = apiKey;
-        this.url = urlTemplate.replaceAll(MAILGUN_DOMAIN_TAG, domain);
+        this.url = urlTemplate;
     }
 
     @Override
