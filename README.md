@@ -42,6 +42,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://devcenter.heroku.com/categories/deployment
 * https://www.baeldung.com/spring-email
 * https://support.google.com/accounts/answer/185833
+* POSTGRE HEROKU: https://devcenter.heroku.com/articles/connecting-to-relational-databases-on-heroku-with-java#using-the-spring_datasource_url-in-a-spring-boot-app
 #### Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)
