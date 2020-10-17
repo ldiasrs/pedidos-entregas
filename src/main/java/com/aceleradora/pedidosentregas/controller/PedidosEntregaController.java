@@ -1,36 +1,32 @@
 package com.aceleradora.pedidosentregas.controller;
 
+import com.aceleradora.pedidosentregas.controller.request.PedidoEntregaRequest;
+import com.aceleradora.pedidosentregas.exception.PedidoNotFoundException;
 import com.aceleradora.pedidosentregas.model.pedido.*;
+import com.aceleradora.pedidosentregas.service.PedidoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/pedidoentrega")
 public class PedidosEntregaController {
 
-    @GetMapping(path = "/sendEmail")
-    public ResponseEntity<PedidoEntrega> defaultPedido() {
-        var pedido = PedidoEntrega.builder()
-                .observacoes("Pode entregar para o porteiro")
-                .valorDaEntrega(BigDecimal.valueOf(20))
-                .localOrigem(Local.builder()
-                        .contato(Contato.builder()
-                                .nome("Gandolf")
-                                .telefone("1010")
-                                .build())
-                        .endereco(Endereco.builder()
-                                .complemento("apt 555")
-                                .cep("0000001")
-                                .build())
-                        .build())
-                .pacote(Pacote.builder()
-                        .larguraEmCentimetros(10)
-                        .profundidadeEmCentimetros(20)
-                        .alturaEmCentimetros(5)
-                        .build())
-                .build();
-         return ResponseEntity.ok(pedido);
+    private PedidoService pedidoService;
+
+    public PedidosEntregaController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<PedidoEntregaResponse> create(@RequestBody PedidoEntregaRequest pedidoEntregaRequest) {
+        var pedido = pedidoService.register(pedidoEntregaRequest);
+        return ResponseEntity.ok(new PedidoEntregaResponse("Pedido registrado com sucesso", pedido.getId()));
+    }
+
+    @GetMapping(path = "/{{id}}")
+    public ResponseEntity<PedidoEntrega> getById(@PathVariable("id") int id) {
+        PedidoEntrega pedido = pedidoService.findPedidoById(id)
+                .orElseThrow(() -> new PedidoNotFoundException("Pedido nao encontrado com ID: " + id));
+        return ResponseEntity.ok(pedido);
     }
 }
