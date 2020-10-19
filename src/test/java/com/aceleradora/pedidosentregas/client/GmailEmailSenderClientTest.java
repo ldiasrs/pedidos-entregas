@@ -2,6 +2,7 @@ package com.aceleradora.pedidosentregas.client;
 
 import com.aceleradora.pedidosentregas.model.email.EmailRequest;
 import com.aceleradora.pedidosentregas.model.email.EmailResponse;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Disabled
 class GmailEmailSenderClientTest {
 
     @Autowired
