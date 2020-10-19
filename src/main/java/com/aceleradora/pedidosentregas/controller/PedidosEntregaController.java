@@ -1,6 +1,7 @@
 package com.aceleradora.pedidosentregas.controller;
 
 import com.aceleradora.pedidosentregas.controller.request.PedidoEntregaRequest;
+import com.aceleradora.pedidosentregas.controller.response.PedidoEntregaResponse;
 import com.aceleradora.pedidosentregas.exception.PedidoNotFoundException;
 import com.aceleradora.pedidosentregas.model.pedido.*;
 import com.aceleradora.pedidosentregas.service.PedidoService;
@@ -23,7 +24,7 @@ public class PedidosEntregaController {
         return ResponseEntity.ok(new PedidoEntregaResponse("Pedido registrado com sucesso", pedido.getId()));
     }
 
-    @GetMapping(path = "/{{id}}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<PedidoEntrega> getById(@PathVariable("id") int id) {
         PedidoEntrega pedido = pedidoService.findPedidoById(id)
                 .orElseThrow(() -> new PedidoNotFoundException("Pedido nao encontrado com ID: " + id));

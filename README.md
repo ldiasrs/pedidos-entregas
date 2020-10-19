@@ -21,7 +21,11 @@ Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso pa
 Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 
 ```
- http get localhost:8080/test
+ http POST localhost:8080/api/pedidoentrega/create <  src/test/resources/create_pedido_entrega.json
+```
+
+```
+ http GET localhost:8080/api/pedidoentrega/1
 ```
 
 ## Testes unitários
@@ -42,6 +46,8 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://devcenter.heroku.com/categories/deployment
 * https://www.baeldung.com/spring-email
 * https://support.google.com/accounts/answer/185833
+* https://www.baeldung.com/spring-data-jpa-generate-db-schema
+* https://spring.io/guides/tutorials/rest/
 #### Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)

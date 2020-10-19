@@ -1,4 +1,4 @@
-package com.aceleradora.pedidosentregas.controller;
+package com.aceleradora.pedidosentregas.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class PedidoEntregaResponse {
     private String msg;
-    private String codigo;
+    private long codigo;
 }

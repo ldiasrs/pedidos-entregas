@@ -1,23 +1,23 @@
 package com.aceleradora.pedidosentregas.model.pedido;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Builder
-@Value
+
 @Entity
+@Table(name = "contato")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "contato")
+@Builder
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Contato implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private String id;
+    @EqualsAndHashCode.Include
+    private int id;
     private String nome;
     private String telefone;
 }
