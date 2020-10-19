@@ -10,6 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PedidoEntregaTest {
 
+    public static final String EXPECTED_DESTINO_NOME = "Gandolf";
+    public static final int LARGURA_EM_CENTIMETROS = 20;
+
     @Test
     public void deveCriarUmPedidoDeEntregaComSucesso() {
         var pedido = PedidoEntrega.builder()
@@ -23,10 +26,13 @@ class PedidoEntregaTest {
                 .observacoes("Pode ser entregue na portaria")
                 .build();
 
-        //TODO Esses asserts poderiam ser mais especficos nao acha?
+        //TODO o teste ficaria mais amplo ao testar todos os campos
         assertThat(pedido.getPacote()).isNotNull();
-        assertThat(pedido.getLocalOrigem()).isNotNull();
+        assertThat(pedido.getPacote().getLarguraEmCentimetros()).isEqualTo(LARGURA_EM_CENTIMETROS);
         assertThat(pedido.getLocalDestino()).isNotNull();
+        assertThat(pedido.getLocalDestino().getContato()).isNotNull();
+        assertThat(pedido.getLocalDestino().getContato().getNome()).isEqualTo(EXPECTED_DESTINO_NOME);
+        assertThat(pedido.getLocalOrigem()).isNotNull();
         assertThat(pedido.getDataHoraBuscaPacoteOrigem()).isNotNull();
         assertThat(pedido.getValorDaEntrega()).isNotNull();
         assertThat(pedido.getObservacoes()).isNotNull();
@@ -36,7 +42,7 @@ class PedidoEntregaTest {
         return Local.builder()
                 .contato(
                         Contato.builder()
-                                .nome("Gandolf")
+                                .nome(EXPECTED_DESTINO_NOME)
                                 .telefone("10")
                                 .build())
                 .endereco(
@@ -70,7 +76,7 @@ class PedidoEntregaTest {
         return Pacote.builder()
                 .alturaEmCentimetros(10)
                 .profundidadeEmCentimetros(10)
-                .larguraEmCentimetros(20)
+                .larguraEmCentimetros(LARGURA_EM_CENTIMETROS)
                 .pesoPacoteEmGramas(2000)
                 .build();
     }
