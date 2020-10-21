@@ -22,25 +22,7 @@ public class PedidoService {
     }
 
     public PedidoEntrega register(PedidoEntregaRequest pedidoEntregaRequest) {
-        var pedido = PedidoEntrega.builder()
-                .observacoes(pedidoEntregaRequest.getObservacoes())
-                .valorDaEntrega(BigDecimal.valueOf(20))
-                .localOrigem(Local.builder()
-                        .contato(Contato.builder()
-                                .nome("Gandolf")
-                                .telefone("1010")
-                                .build())
-                        .endereco(Endereco.builder()
-                                .complemento("apt 555")
-                                .cep("0000001")
-                                .build())
-                        .build())
-                .pacote(Pacote.builder()
-                        .larguraEmCentimetros(10)
-                        .profundidadeEmCentimetros(20)
-                        .alturaEmCentimetros(5)
-                        .build())
-                .build();
+        var pedido = PedidoEntrega.from(pedidoEntregaRequest);
        return pedidoEntregaRepository.save(pedido);
     }
 }

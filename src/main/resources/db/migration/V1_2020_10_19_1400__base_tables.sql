@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS `local` (
 );
 CREATE TABLE IF NOT EXISTS `pacote` (
     `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `altura_em_centimetros` int,
-    `largura_em_centimetros` int,
-    `profundidade_em_centimetros` int,
+    `altura_em_centimetros` decimal(19,2),
+    `largura_em_centimetros` decimal(19,2),
+    `profundidade_em_centimetros` decimal(19,2),
     `peso_pacote_em_gramas` decimal(19,2)
 );
 CREATE TABLE IF NOT EXISTS `pedido_entrega` (

@@ -17,8 +17,8 @@ public class Pacote {
     @EqualsAndHashCode.Include
     private int id;
     private float pesoPacoteEmGramas;
-    private int larguraEmCentimetros;
-    private int alturaEmCentimetros;
-    private int profundidadeEmCentimetros;
+    private float larguraEmCentimetros;
+    private float alturaEmCentimetros;
+    private float profundidadeEmCentimetros;
 
 }

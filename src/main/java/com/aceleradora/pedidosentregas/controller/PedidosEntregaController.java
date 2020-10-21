@@ -8,11 +8,12 @@ import com.aceleradora.pedidosentregas.service.PedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/pedidoentrega")
 public class PedidosEntregaController {
 
-    public static final String MSG_PEDIDO_REGISTRADO_COM_SUCESSO = "Pedido registrado com sucesso";
     private PedidoService pedidoService;
 
     public PedidosEntregaController(PedidoService pedidoService) {
@@ -20,9 +21,9 @@ public class PedidosEntregaController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<PedidoEntregaResponse> create(@RequestBody PedidoEntregaRequest pedidoEntregaRequest) {
+    public ResponseEntity<PedidoEntregaResponse> create(@Valid  @RequestBody PedidoEntregaRequest pedidoEntregaRequest) {
         var pedido = pedidoService.register(pedidoEntregaRequest);
-        return ResponseEntity.ok(new PedidoEntregaResponse(MSG_PEDIDO_REGISTRADO_COM_SUCESSO, pedido.getId()));
+        return ResponseEntity.ok(PedidoEntregaResponse.from(pedido));
     }
 
     @GetMapping(path = "/{id}")

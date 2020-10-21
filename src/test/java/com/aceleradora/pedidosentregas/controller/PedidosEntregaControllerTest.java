@@ -15,7 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static com.aceleradora.pedidosentregas.controller.PedidosEntregaController.MSG_PEDIDO_REGISTRADO_COM_SUCESSO;
+import static com.aceleradora.pedidosentregas.controller.ValidRequestBuilder.newPedidoEntregaRequest;
+import static com.aceleradora.pedidosentregas.controller.response.PedidoEntregaResponse.MSG_PEDIDO_REGISTRADO_COM_SUCESSO;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -64,10 +65,7 @@ class PedidosEntregaControllerTest {
     public void deveRegistrarPedidoDeEntregaComSucesso() throws Exception {
         //DADO um pedido request sendo regsitrado pelo servico com sucesso
         //DADO que o servico retorna o ID desse pedido
-        PedidoEntregaRequest pedidoEntregaRequest =
-                PedidoEntregaRequest.builder()
-                        .observacoes("use as aguias para entregar o anel em mordor")
-                        .build();
+        PedidoEntregaRequest pedidoEntregaRequest = newPedidoEntregaRequest();
         PedidoEntrega expectedPedido =
                 PedidoEntrega.builder()
                         .id(1)

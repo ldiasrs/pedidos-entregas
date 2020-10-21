@@ -5,14 +5,15 @@ import com.aceleradora.pedidosentregas.model.pedido.PedidoEntrega;
 import com.aceleradora.pedidosentregas.repository.PedidoEntregaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 
 import java.util.Optional;
 
+import static com.aceleradora.pedidosentregas.controller.ValidRequestBuilder.newPedidoEntregaRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PedidoServiceTest {
 
@@ -46,10 +47,7 @@ class PedidoServiceTest {
     @Test
     public void deveRegistrarPedidoComSucesso() {
         //DADO um pedido sendo salvo no repositorio com sucesso
-        PedidoEntregaRequest pedidoEntregaRequest =
-                PedidoEntregaRequest.builder()
-                        .observacoes("use as aguias para entregar o anel em mordor")
-                        .build();
+        PedidoEntregaRequest pedidoEntregaRequest = newPedidoEntregaRequest();
 
         when(mockPedidoRepository.save(any())).thenAnswer(
                 (InvocationOnMock invocation) -> invocation.getArguments()[0]);

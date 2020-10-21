@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LocalRequest {
-
-    @NotNull
-    private ContatoRequest contato;
-    @NotNull
-    private EnderecoRequest endereco;
+public class EnderecoRequest {
+    @NotBlank
+    private String cep;
+    @NotBlank
+    private String numero;
+    private String complemento;
 }

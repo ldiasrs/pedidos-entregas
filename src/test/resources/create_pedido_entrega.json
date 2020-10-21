@@ -1,3 +1,33 @@
 {
-  "observacoes" : "Entregar na rua dos bobos numero zero"
+  "observacoes": "Use as aguias para entregar mais rapido",
+  "pacote": {
+    "pesoPacoteEmGramas": 50.0,
+    "larguraEmCentimetros": 1.0,
+    "alturaEmCentimetros": 1.0,
+    "profundidadeEmCentimetros": 1.0
+  },
+  "localOrigem": {
+    "contato": {
+      "nome": "Gandolf",
+      "telefone": "#GreyMage"
+    },
+    "endereco": {
+      "cep": "#Valfenda",
+      "numero": "ElfNumber",
+      "complemento": "Hiden dor on rocks"
+    }
+  },
+  "localDestino": {
+    "contato": {
+      "nome": "Sauron",
+      "telefone": "#BigFireEye"
+    },
+    "endereco": {
+      "cep": "#Mordor",
+      "numero": "Vulcano",
+      "complemento": "Hiden dor on vulcano"
+    }
+  },
+  "dataHoraBuscaPacoteOrigem": "2020-10-21T14:10:30",
+  "valorDaEntrega": 12.5
 }
