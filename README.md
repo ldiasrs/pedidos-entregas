@@ -1,6 +1,15 @@
 # API para pedidos de entrega
 
-Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo.
+- Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo e ensino
+- Projeto está com algumas classes em português para facilitar o ensino e compreensão. 
+  
+## Nesse projeto é possível ter referências de
+ - Spring JPA - Mapeamento de entidades com persistência
+ - Lombok para facilidades de builders e Classes
+ - Teste unitários de serviços e controllers
+ - Flyway Controle de versão do banco de dados
+ - Spring Security - segurança de APIs, acesso e permissões
+ - CI/CD usando o CircleCI para pipeline + Heroku como PaaS
 
 ## Pipeline 
 
@@ -33,7 +42,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
  ./gradlew test
 ```
 ### Referência técninca
-
+* https://github.com/sakshamsangal/Engineering/tree/0f1c9ba47069cf6e200089a976786e7ad784915f/BackEnd/Java
 * https://start.spring.io/
 * https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-46b74371d107
 * https://www.jenv.be/
@@ -60,6 +69,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#using-boot-devtools)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
 #### Guides
 The following guides illustrate how to use some features concretely:
@@ -69,8 +79,4 @@ The following guides illustrate how to use some features concretely:
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
 * [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 
-#### Additional Links
-These additional references should also help you:
-
-* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 

@@ -32,4 +32,15 @@ public class PedidosEntregaController {
                 .orElseThrow(() -> new PedidoNotFoundException("Pedido nao encontrado com ID: " + id));
         return ResponseEntity.ok(pedido);
     }
+
+    @GetMapping(path = "/info")
+    public ResponseEntity<String> getInfo() {
+        return ResponseEntity.ok("Info: Este é um mapeamento que nao requer autenticação");
+    }
+
+
+    @GetMapping(path = "/admin")
+    public ResponseEntity<String> getAdmin() {
+        return ResponseEntity.ok("Info: Este mapeamento só é acessado com credencial de Autoritie: ADMIN");
+    }
 }
