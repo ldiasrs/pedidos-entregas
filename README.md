@@ -2,7 +2,19 @@
 
 - Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo e ensino
 - Projeto está com algumas classes em português para facilitar o ensino e compreensão. 
-  
+
+# TODO list
+
+- Fazer funcionar a validação do JWT 
+- Criar testes funcionais para todos os cenario de security
+  - Usando JWT
+  - Usando authenticação base
+- Configurar para suportar cenario de API_KEY + testes
+- Configurar error handler
+- Configurar documentação API
+- Documentar outras referencias
+- Criar um App cliente usando React ou Angular
+
 ## Nesse projeto é possível ter referências de
  - Spring JPA - Mapeamento de entidades com persistência
  - Lombok para facilidades de builders e Classes

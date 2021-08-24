@@ -1,11 +1,13 @@
 package com.aceleradora.pedidosentregas.config;
 
 import com.aceleradora.pedidosentregas.config.filters.*;
+import com.aceleradora.pedidosentregas.controller.PathMappings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Arrays;
+
+import static com.aceleradora.pedidosentregas.controller.PathMappings.getFullPath;
 import static java.util.Collections.singletonList;
 
 /**
@@ -36,15 +41,23 @@ import static java.util.Collections.singletonList;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final boolean USE_JWT_TOKEN = true;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         defineCorsConfig(http);
         defineAthorizationConfig(http);
-        disableCsrf(http);
-        //defineJWTAccessTokenConfiguration(http);
-        //enableCsrfCookieToken(http);
+        enableCsrfCookieToken(http);
+        if (USE_JWT_TOKEN) {
+            disableCorsSessionIdToken(http);
+            disableCsrf(http);
+            defineJWTAccessTokenConfiguration(http);
+        }
     }
 
+    private void disableCorsSessionIdToken(HttpSecurity http) throws Exception {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
 
     /**
      * User Authentication
@@ -70,8 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * 2) Autority que define o que cada usuário pode fazer org.springframework.security.core.authority.SimpleGrantedAuthority
          * 3) Roles é um conjunto de Autority exemplo: READ, WRITE, DELETE
          */
-
-        //apos autenticacao Spring gera um token para a sessao do usuário
+        //apos autenticacao Spring gera um token para a sessao do usuário myuser
         UserDetails user =
                 User.builder()
                         .username("myuser")
@@ -79,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("$2y$12$XiDW0q0NYMuyw2on9SuEOONIhKMTu9osQbG2YEKXPxR7QghqNNBI6")
                         .roles("USER")
                         .build();
-        //apos autenticacao Spring gera um token para a sessao do usuário
+        //apos autenticacao Spring gera um token para a sessao do usuário admin
         UserDetails admin =
                 User.builder()
                         .username("admin")
@@ -94,13 +106,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void defineAthorizationConfig(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //permite acesso ao /info sem autenticacao
-                .antMatchers("/api/pedidoentrega/info").permitAll()
-                .antMatchers("/api/pedidoentrega/admin").hasAnyRole( "ADMIN")
+                .antMatchers(getFullPath(PathMappings.INFO_MAPPING)).permitAll()
+                .antMatchers(getFullPath(PathMappings.ADMIN_MAPPING)).hasAnyRole( "ADMIN")
                 //o resto do acesso dos pedidosentrega precisam de autenticacao
-                .antMatchers("/api/pedidoentrega/**").authenticated()
-                .and().formLogin()
+                .antMatchers(PathMappings.BASE_PATH_MAPPING+"/**").authenticated()
+                //Habilita o form login do spring
+                //.and().formLogin()
                 .and().httpBasic();
-
         //o restante de todos os acesso sao negados
         http.authorizeRequests().antMatchers("/**").denyAll();
     }
@@ -115,7 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * ignoringAntMatchers - ignora a verificacao do token para esses padroes de path
          */
         http.csrf()
-                .ignoringAntMatchers("/api/pedidoentrega/info")
+                .ignoringAntMatchers(PathMappings.INFO_MAPPING)
                 .csrfTokenRepository(
                         CookieCsrfTokenRepository.withHttpOnlyFalse());
         return http;
@@ -180,6 +192,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 configuration.setMaxAge(3600L);
                 //Aceita credinciais de segurança
                 configuration.setAllowCredentials(true);
+                if (USE_JWT_TOKEN) {
+                    configuration.setExposedHeaders(Arrays.asList("Authorization"));
+                }
                 return configuration;
             }
         });

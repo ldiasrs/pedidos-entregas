@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aceleradora.pedidosentregas.config.filters.JWTTokenGeneratorFilter;
+import com.aceleradora.pedidosentregas.controller.PathMappings;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 import static com.aceleradora.pedidosentregas.config.filters.JWTTokenGeneratorFilter.JWT_KEY_THAT_SHOULD_BE_ON_ENV;
+import static com.aceleradora.pedidosentregas.controller.PathMappings.getFullPath;
 
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
@@ -44,15 +46,19 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                         AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
-                    throw new BadCredentialsException("Invalid Token received!");
+                throw new BadCredentialsException("Invalid Token received!", e);
             }
         }
         chain.doFilter(request, response);
     }
 
 
+    /**
+     * Vai validar o filter para todos os paths menos /auth
+     */
     @Override protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/user"); }
+        return request.getServletPath().equals(getFullPath(PathMappings.AUTH_MAPPING));
+    }
 
 
 }
