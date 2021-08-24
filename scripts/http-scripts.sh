@@ -19,7 +19,7 @@ http --verbose -a admin:senhalocal localhost:8080/api/pedidoentrega/admin
 
 
 http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/auth
-export JWT_AUTH_TOKEN=" eyJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJwZWRpZG9zLWVudHJlZ2FzLWFwaSIsInN1YiI6IkpXVC1Ub2tlbiIsInVzZXJuYW1lIjoibXl1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2Mjk4MDQ3ODQsImV4cCI6MTYyOTgwNTA4NH0.Ucdr-IwrzGVOdtsE0DgsoUbTkiiVZenwlmbNgsASwd7BgrrXTYSoSxQeWfqJRKLp"
+export JWT_AUTH_TOKEN=" eyJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJwZWRpZG9zLWVudHJlZ2FzLWFwaSIsInN1YiI6IkpXVC1Ub2tlbiIsInVzZXJuYW1lIjoibXl1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2Mjk4MDY5MjQsImV4cCI6MTYyOTgwNzIyNH0.s3jnEK1SpXAoTImmXk2aMZJev8RxSFsHIZ4KuXCmjmNQcaPYWeX7wALN1rrBi4we"
 http  --verbose  localhost:8080/api/pedidoentrega/create Authorization:"${JWT_AUTH_TOKEN}" < src/test/resources/create_pedido_entrega.json
 http --verbose localhost:8080/api/pedidoentrega/1 Authorization:"${JWT_AUTH_TOKEN}"
 curl -H 'Accept: application/json' -H "Authorization:${JWT_AUTH_TOKEN}" localhost:8080/api/pedidoentrega/1
