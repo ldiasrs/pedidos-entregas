@@ -22,25 +22,143 @@
 ## Spring Security modos dentro do projeto
 
 Nesse projeto o spring security esta configurado com diferentes modos sendo eles
+### API_KEY
 
-### XSRF-TOKEN
+Alterar propriedade no arquivo *resources/application.properties*
+```
+api.security.mode=API_KEY
+```
+*Requisições de teste*
 
--
+A API_KEY é uma chave unica que é utilizada no header para validar
+```
+http --verbose localhost:8080/api/pedidoentrega/1 API_KEY:mySecretSameShouldBeOnSystemEnv
+
+GET /api/pedidoentrega/1 HTTP/1.1
+API_KEY: mySecretSameShouldBeOnSystemEnv
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: localhost:8080
+User-Agent: HTTPie/2.4.0
+```
+Resposta
+```
+HTTP/1.1 200 
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Connection: keep-alive
+Content-Type: application/json
+Date: Wed, 25 Aug 2021 21:10:46 GMT
+Expires: 0
+Keep-Alive: timeout=60
+Pragma: no-cache
+Transfer-Encoding: chunked
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+<BODY>
+```
+
+*Exemplo para criar um pedido*
+```
+http --verbose localhost:8080/api/pedidoentrega/create < src/test/resources/create_pedido_entrega.json API_KEY:mySecretSameShouldBeOnSystemEnv
+```
+
+### SESSION_ID
+Alterar propriedade no arquivo *resources/application.properties*
+```
+api.security.mode=SESSION_ID
+```
+*Requisições de teste*
+
+1) Ao fazer uma primeira requisicao com usuário e senha o Spring retorna um JSESSIONID que é o token de acesso da sessao
+```
+http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/1
+
+GET /api/pedidoentrega/1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Authorization: Basic bXl1c2VyOnNlbmhhbG9jYWw=
+Connection: keep-alive
+Host: localhost:8080
+User-Agent: HTTPie/2.4.0
+```
+Resposta
+```
+HTTP/1.1 200 
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Connection: keep-alive
+Content-Type: application/json
+Date: Wed, 25 Aug 2021 21:07:00 GMT
+Expires: 0
+Keep-Alive: timeout=60
+Pragma: no-cache
+Set-Cookie: JSESSIONID=8BF308578DBF2F8617E7E4999C7234A0; Path=/; HttpOnly
+Transfer-Encoding: chunked
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+<BODY>
+
+```
+2) Com o JSESSIONID é possivel realizar outras requisições sem mandar mais usuario e senha
+```
+http --verbose localhost:8080/api/pedidoentrega/1 Cookie:'JSESSIONID=8BF308578DBF2F8617E7E4999C7234A0'
+```
+Resposta
+```
+GET /api/pedidoentrega/1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: JSESSIONID=8BF308578DBF2F8617E7E4999C7234A0
+Host: localhost:8080
+User-Agent: HTTPie/2.4.0
+```
 
 ### JWT
 
--
+Alterar propriedade no arquivo *resources/application.properties*
+```
+api.security.mode=JWT
+```
+Com JWT é preciso primeiro acessar um endpoint para autheticar e pegar o Token
+```
+http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/auth
+```
+Depois é possível usar o JWT token nas próximas requesições
+```
+export JWT_AUTH_TOKEN=" eyJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJwZWRpZG9zLWVudHJlZ2FzLWFwaSIsInN1YiI6IkpXVC1Ub2tlbiIsInVzZXJuYW1lIjoibXl1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2Mjk4MDY5MjQsImV4cCI6MTYyOTgwNzIyNH0.s3jnEK1SpXAoTImmXk2aMZJev8RxSFsHIZ4KuXCmjmNQcaPYWeX7wALN1rrBi4we"
+http --verbose localhost:8080/api/pedidoentrega/1 Authorization:"${JWT_AUTH_TOKEN}"
+```
+### XSRF-TOKEN
+
+* Alterar propriedade no arquivo [resources/application.properties]
+```
+api.security.mode=XSRF-TOKEN
+```
+CONTINUA.....
+
 
 # TODO list
 
-- Fazer um StringDataEncrypter
-- Fazer funcionar a validação do JWT 
-- Criar testes funcionais para todos os cenario de security
-- https://www.baeldung.com/spring-security-integration-tests
-- Usando JWT
-- Usando authenticação base
-- Configurar para suportar cenario de API_KEY + testes
-- OK Configurar error handler
+- Terminar de escrever a doc dos tipos de autenticação
+- Configar logback
+- Escrever a doc do que é o backend
+- Escrever doc de como funciona o flyway
+- melhorar variaveis do application.properties para ambiente
+- Arrumar testes desabilitados
+- Criar modulo de testes smoke test
+- Criar modulo de testes e2e
+- Criar modulo de testes de segurança
+- Mutation test
+- Falar sobre JENV para mudar java local
 - Configurar documentação API
 - Documentar outras referencias
 - Criar um App cliente usando React ou Angular
