@@ -3,14 +3,38 @@
 - Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo e ensino
 - Projeto está com algumas classes em português para facilitar o ensino e compreensão. 
 
+# Spring Security
+
+- O spring security prove a segurança do acesso a API 
+- É possivel criar diferentes usuários onde cada usuário tem um determinado acesso via roles
+  - Exemplo: user: myuser role:USER user: admin role:ADMIN
+  - Pode ser definido que o endpoint /admin por exemplo só é acessado para usuário com role /ADMIN
+- O spring security tambem fornece mecanismos de TOKEN com JWT,XSRF-TOKEN, e API_TOKEN
+- Os Tokens são chaves de acesso para evitar autenticação a cada acesso
+- Uma vez autenticado é passado um token/chave para o usuário para que ele possa apenas passar o token e não mais usuário e senha
+- Em alguns Tokens existe a possíbilidade de configurar tempo de validade e outros atributos 
+
+## Spring Security modos dentro do projeto
+
+Nesse projeto o spring security esta configurado com diferentes modos sendo eles
+
+### XSRF-TOKEN
+
+-
+
+### JWT
+
+-
+
 # TODO list
 
 - Fazer funcionar a validação do JWT 
 - Criar testes funcionais para todos os cenario de security
+-   https://www.baeldung.com/spring-security-integration-tests
   - Usando JWT
   - Usando authenticação base
 - Configurar para suportar cenario de API_KEY + testes
-- Configurar error handler
+- OK Configurar error handler
 - Configurar documentação API
 - Documentar outras referencias
 - Criar um App cliente usando React ou Angular

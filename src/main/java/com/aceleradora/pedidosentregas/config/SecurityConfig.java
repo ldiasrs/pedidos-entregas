@@ -2,6 +2,7 @@ package com.aceleradora.pedidosentregas.config;
 
 import com.aceleradora.pedidosentregas.config.filters.*;
 import com.aceleradora.pedidosentregas.controller.PathMappings;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +23,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 import static com.aceleradora.pedidosentregas.controller.PathMappings.getFullPath;
 import static java.util.Collections.singletonList;
@@ -41,18 +44,38 @@ import static java.util.Collections.singletonList;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final boolean USE_JWT_TOKEN = true;
+    private String securityMode;
+    private static final String[] allowedTokensMode = {"JWT", "XSRF-TOKEN", "API_TOKEN", "SESSION_ID"};
+
+    public SecurityConfig(@Value("${api.security.mode}") String securityMode) {
+        this.securityMode = securityMode != null ? securityMode.toUpperCase(Locale.ROOT) : "JWT";
+        String found = Arrays.stream(allowedTokensMode).sequential()
+                .filter(allowedTokensMode -> allowedTokensMode.equals(this.securityMode))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Allowed token mode should be " + Arrays.toString(allowedTokensMode)));
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         defineCorsConfig(http);
         defineAthorizationConfig(http);
-        enableCsrfCookieToken(http);
-        if (USE_JWT_TOKEN) {
-            disableCorsSessionIdToken(http);
-            disableCsrf(http);
-            defineJWTAccessTokenConfiguration(http);
+        switch (securityMode) {
+            case "JWT":
+                disableCorsSessionIdToken(http);
+                disableCsrf(http);
+                defineJWTAccessTokenConfiguration(http);
+                break;
+            case "XSRF-TOKEN":
+                enableCsrfCookieToken(http);
+                break;
+            case "API_TOKEN":
+            case "SESSION_ID":
+                enableCorsSessionIdToken(http);
         }
+    }
+
+    private void enableCorsSessionIdToken(HttpSecurity http) throws Exception {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     private void disableCorsSessionIdToken(HttpSecurity http) throws Exception {
@@ -192,7 +215,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 configuration.setMaxAge(3600L);
                 //Aceita credinciais de segurança
                 configuration.setAllowCredentials(true);
-                if (USE_JWT_TOKEN) {
+                if (isJWTSecurityMode()) {
                     configuration.setExposedHeaders(Arrays.asList("Authorization"));
                 }
                 return configuration;
@@ -201,5 +224,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return http;
     }
 
-
+    private boolean isJWTSecurityMode() {
+        return "JWT".equalsIgnoreCase(this.securityMode);
+    }
 }

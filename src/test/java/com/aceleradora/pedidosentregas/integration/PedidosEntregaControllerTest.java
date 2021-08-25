@@ -1,5 +1,7 @@
-package com.aceleradora.pedidosentregas.controller;
+package com.aceleradora.pedidosentregas.integration;
 
+import com.aceleradora.pedidosentregas.controller.PathMappings;
+import com.aceleradora.pedidosentregas.controller.PedidosEntregaController;
 import com.aceleradora.pedidosentregas.controller.request.PedidoEntregaRequest;
 import com.aceleradora.pedidosentregas.controller.response.PedidoEntregaResponse;
 import com.aceleradora.pedidosentregas.model.pedido.Contato;
@@ -8,9 +10,12 @@ import com.aceleradora.pedidosentregas.model.pedido.PedidoEntrega;
 import com.aceleradora.pedidosentregas.service.PedidoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -25,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(PedidosEntregaController.class)
 class PedidosEntregaControllerTest {
 
@@ -35,6 +40,7 @@ class PedidosEntregaControllerTest {
     @MockBean
     private PedidoService pedidoService;
 
+    @WithMockUser(value = "spring")
     @Test
     public void deveRetornarPedidoDeEntregaPorID() throws Exception {
         //DADO um pedido sendo retornado pelo servico
@@ -47,6 +53,7 @@ class PedidosEntregaControllerTest {
                                         .build())
                                 .build())
                         .build();
+        //DADO que o pedido sera retornado pelo servico
         when(pedidoService.findPedidoById(expectedPedido.getId()))
                 .thenReturn(
                         Optional.of(expectedPedido)
@@ -55,12 +62,13 @@ class PedidosEntregaControllerTest {
         //QUANDO for solicitado esse pedido via HTTP
         //ENTAO deve retornar 200 OK com o JSON do pedido
         String expecteJsonContent = new ObjectMapper().writeValueAsString(expectedPedido);
-        this.mockMvc.perform(get("/api/pedidoentrega/1"))
+        this.mockMvc.perform(get(PathMappings.BASE_PATH_MAPPING+"/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(expecteJsonContent));
     }
 
+    @WithMockUser(value = "spring")
     @Test
     public void deveRegistrarPedidoDeEntregaComSucesso() throws Exception {
         //DADO um pedido request sendo regsitrado pelo servico com sucesso
