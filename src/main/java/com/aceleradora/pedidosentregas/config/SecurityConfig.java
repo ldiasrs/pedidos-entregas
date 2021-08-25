@@ -17,14 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Arrays;
-import java.util.Locale;
-import java.util.stream.Stream;
 
 import static com.aceleradora.pedidosentregas.controller.PathMappings.getFullPath;
 import static java.util.Collections.singletonList;
@@ -43,14 +41,27 @@ import static java.util.Collections.singletonList;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] allowedTokensMode = {"JWT", "XSRF-TOKEN", "API_KEY", "SESSION_ID"};
 
     private String securityMode;
-    private static final String[] allowedTokensMode = {"JWT", "XSRF-TOKEN", "API_TOKEN", "SESSION_ID"};
+    private String apiKeyHeaderName;
+    private String apiKeyValue;
 
-    public SecurityConfig(@Value("${api.security.mode}") String securityMode) {
-        this.securityMode = securityMode != null ? securityMode.toUpperCase(Locale.ROOT) : "JWT";
-        String found = Arrays.stream(allowedTokensMode).sequential()
-                .filter(allowedTokensMode -> allowedTokensMode.equals(this.securityMode))
+    public SecurityConfig(@Value("${api.security.mode}") String securityMode, @Value("${api.security.apikey.headername}")
+            String apiKeyHeaderName, @Value("${api.security.apikey.secretvalue}") String apiKeyValue) {
+
+        validateConfig(apiKeyHeaderName, apiKeyValue, securityMode);
+        this.securityMode = securityMode;
+        this.apiKeyHeaderName = apiKeyHeaderName;
+        this.apiKeyValue = apiKeyValue;
+    }
+
+    private void validateConfig(String securityMode, String httpAuthTokenHeaderName, String principalRequestValue) {
+        if (StringUtils.isEmpty(httpAuthTokenHeaderName) || StringUtils.isEmpty(principalRequestValue)) {
+            throw new RuntimeException("ENV variables should be defined: API_KEY_HEADER_NAME, API_KEY");
+        }
+        Arrays.stream(allowedTokensMode).sequential()
+                .filter(allowedTokensMode -> allowedTokensMode.equals(securityMode))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Allowed token mode should be " + Arrays.toString(allowedTokensMode)));
     }
@@ -68,11 +79,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             case "XSRF-TOKEN":
                 enableCsrfCookieToken(http);
                 break;
-            case "API_TOKEN":
+            case "API_KEY":
+                disableCorsSessionIdToken(http);
+                disableCsrf(http);
+                defineApiKeyAccessConfiguration(http);
+                break;
             case "SESSION_ID":
                 enableCorsSessionIdToken(http);
         }
     }
+
+
 
     private void enableCorsSessionIdToken(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
@@ -156,6 +173,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return http;
     }
 
+    private void defineApiKeyAccessConfiguration(HttpSecurity http) {
+        APIKeyAuthValidatorFilter apiKeyValidatorFilter = new APIKeyAuthValidatorFilter(this.apiKeyHeaderName, this.apiKeyValue);
+        http.addFilterBefore(apiKeyValidatorFilter, BasicAuthenticationFilter.class);
+    }
 
     private void defineJWTAccessTokenConfiguration(HttpSecurity http) {
         http

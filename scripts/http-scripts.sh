@@ -23,3 +23,6 @@ export JWT_AUTH_TOKEN=" eyJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJwZWRpZG9zLWVudHJlZ2FzLWF
 http  --verbose  localhost:8080/api/pedidoentrega/create Authorization:"${JWT_AUTH_TOKEN}" < src/test/resources/create_pedido_entrega.json
 http --verbose localhost:8080/api/pedidoentrega/1 Authorization:"${JWT_AUTH_TOKEN}"
 curl -H 'Accept: application/json' -H "Authorization:${JWT_AUTH_TOKEN}" localhost:8080/api/pedidoentrega/1
+
+http --verbose localhost:8080/api/pedidoentrega/create < src/test/resources/create_pedido_entrega.json API_KEY:mySecretSameShouldBeOnSystemEnv
+http --verbose localhost:8080/api/pedidoentrega/1 API_KEY:mySecretSameShouldBeOnSystemEnv
