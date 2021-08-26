@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `pedido_entrega` (
     `data_hora_busca_pacote_origem` timestamp,
     `observacoes` varchar(255),
     `valor_da_entrega` decimal(19,2),
-    `peso_pacote_em_gramas` float,
     `local_destino_id` int,
     `local_origem_id` int,
     `pacote_id` int

@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         defineAthorizationConfig(http);
         switch (securityMode) {
             case "JWT":
+                addLogFilters(http);
                 disableCorsSessionIdToken(http);
                 disableCsrf(http);
                 defineJWTAccessTokenConfiguration(http);
@@ -85,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 defineApiKeyAccessConfiguration(http);
                 break;
             case "SESSION_ID":
+                disableCsrf(http);
                 enableCorsSessionIdToken(http);
         }
     }
@@ -178,13 +180,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(apiKeyValidatorFilter, BasicAuthenticationFilter.class);
     }
 
-    private void defineJWTAccessTokenConfiguration(HttpSecurity http) {
+    private void addLogFilters(HttpSecurity http) {
         http
                 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class);
+    }
+
+    private void defineJWTAccessTokenConfiguration(HttpSecurity http) {
+        http
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
     }
 
     private HttpSecurity disableCsrf(HttpSecurity http) throws Exception {

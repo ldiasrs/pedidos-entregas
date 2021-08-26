@@ -3,9 +3,37 @@
 - Projeto pedidos de entregas tem a finalidade de ser usado como um caso de uso para estudo e ensino
 - Projeto está com algumas classes em português para facilitar o ensino e compreensão. 
 
+# Como funciona
+
+* Quando é iniciado o backend é criado um banco de dados em memória usando H2 DB
+* Após isso é criado uma entrada de entrega de pedido para consulta
+
+## Instalando um cliente http
+
+* Nesse caso eu estou usando o https://httpie.io/ por ser mais leve
+* Outro fácil de usar é Postman https://www.postman.com/downloads/
+
+## Como consultar pedidos?
+
+* Para consultar os pedidos depende da configuração do modo do Spring Security
+  * O padrão é usar o user e senha:  usário:myuser senha:senhalocal
+  * Atenção: Esse usuário é meramente para aprendizado caso seja utilizado em PROD deve ser protegido
+
+```
+http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/1
+```
+
+## Como criar pedidos?
+
+* Os pedidos são criados fazendo um POST no endpoint _/api/pedidoentrega/create_
+```
+http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/create < src/test/resources/create_pedido_entrega.json
+```
+
 # Spring Security
 
 *Segurança de API*
+
 - O spring security prove a segurança do acesso a API 
 - É possivel criar diferentes usuários onde cada usuário tem um determinado acesso via roles
   - Exemplo: user: myuser role:USER user: admin role:ADMIN
@@ -21,8 +49,11 @@
 
 ## Spring Security modos dentro do projeto
 
-Nesse projeto o spring security esta configurado com diferentes modos sendo eles
+* Nesse projeto o spring security esta configurado com diferentes modos sendo eles
+
 ### API_KEY
+
+https://en.wikipedia.org/wiki/Application_programming_interface_key
 
 Alterar propriedade no arquivo *resources/application.properties*
 ```
@@ -68,6 +99,9 @@ http --verbose localhost:8080/api/pedidoentrega/create < src/test/resources/crea
 ```
 
 ### SESSION_ID
+
+https://docs.spring.io/spring-session/docs/current/reference/html5/#introduction
+
 Alterar propriedade no arquivo *resources/application.properties*
 ```
 api.security.mode=SESSION_ID
@@ -124,6 +158,8 @@ User-Agent: HTTPie/2.4.0
 
 ### JWT
 
+https://jwt.io/introduction
+
 Alterar propriedade no arquivo *resources/application.properties*
 ```
 api.security.mode=JWT
@@ -139,21 +175,60 @@ http --verbose localhost:8080/api/pedidoentrega/1 Authorization:"${JWT_AUTH_TOKE
 ```
 ### XSRF-TOKEN
 
+https://laravel.com/docs/5.0/routing#csrf-protection
+
 * Alterar propriedade no arquivo [resources/application.properties]
 ```
 api.security.mode=XSRF-TOKEN
 ```
-CONTINUA.....
+1) Ao fazer uma primeira requisicao com usuário e senha o Spring retorna um JSESSIONID que é o token de acesso da sessao
+```
+http --verbose -a myuser:senhalocal localhost:8080/api/pedidoentrega/1
+
+GET /api/pedidoentrega/1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Authorization: Basic bXl1c2VyOnNlbmhhbG9jYWw=
+Connection: keep-alive
+Host: localhost:8080
+User-Agent: HTTPie/2.4.0
+```
+Resposta
+```
+HTTP/1.1 200 
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Connection: keep-alive
+Content-Type: application/json
+Date: Thu, 26 Aug 2021 14:05:04 GMT
+Expires: 0
+Keep-Alive: timeout=60
+Pragma: no-cache
+Set-Cookie: XSRF-TOKEN=06936ade-5797-472a-b630-4da1568ef55f; Path=/
+Set-Cookie: JSESSIONID=7D3F1D4234C56651DD8EE41E9C679FE8; Path=/; HttpOnly
+Transfer-Encoding: chunked
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+<BODY>
+
+```
+2) Com o JSESSIONID é possivel realizar outras requisições sem mandar mais usuario e senha
+```
+http --verbose localhost:8080/api/pedidoentrega/1 Cookie:'XSRF-TOKEN=06936ade-5797-472a-b630-4da1568ef55f'
+```
 
 
 # TODO list
 
-- Terminar de escrever a doc dos tipos de autenticação
-- Configar logback
 - Escrever a doc do que é o backend
 - Escrever doc de como funciona o flyway
   - Explicar como trocar o banco de dados by URL
 - melhorar variaveis do application.properties para ambiente
+- Colocar variáveis no ambiente do Github
+- Estudar soluções de build e deploy com github  actions
 - Arrumar testes desabilitados
 - Criar modulo de testes smoke test
 - Criar modulo de testes e2e
@@ -202,7 +277,9 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 ```
  ./gradlew test
 ```
-### Referência técninca
+# Referência técninca
+
+* https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-logging
 * https://www.baeldung.com/spring-security-integration-tests
 * https://github.com/sakshamsangal/Engineering/tree/0f1c9ba47069cf6e200089a976786e7ad784915f/BackEnd/Java
 * https://start.spring.io/
@@ -223,7 +300,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * https://www.baeldung.com/spring-boot-bean-validation
 * https://www.baeldung.com/spring-date-parameters
 
-#### Spring
+## Spring
 
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/gradle-plugin/reference/html/)
@@ -233,7 +310,7 @@ Usando o https://httpie.org/ como cliente (podendo usar o postman ou outro)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
-#### Guides
+## Guides
 The following guides illustrate how to use some features concretely:
 
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
