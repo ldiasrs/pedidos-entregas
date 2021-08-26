@@ -152,6 +152,7 @@ CONTINUA.....
 - Configar logback
 - Escrever a doc do que é o backend
 - Escrever doc de como funciona o flyway
+  - Explicar como trocar o banco de dados by URL
 - melhorar variaveis do application.properties para ambiente
 - Arrumar testes desabilitados
 - Criar modulo de testes smoke test

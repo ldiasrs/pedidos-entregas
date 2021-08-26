@@ -42,8 +42,6 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
-apply from: "test-integration.gradle"
-
 test {
 	useJUnitPlatform()
 }
